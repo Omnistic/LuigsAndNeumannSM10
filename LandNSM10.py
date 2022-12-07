@@ -26,14 +26,13 @@ BAUDRATE = 115200
 BYTESIZE = sr.EIGHTBITS
 PARITY = sr.PARITY_NONE
 STOPBITS = sr.STOPBITS_ONE
-CONNECTION_TIMEOUT = 3.0 # [seconds]
+CONNECTION_TIMEOUT = 0.1 # [seconds]
 
 # Time to sleep after sending a serial command
 CMD_SLEEP = 0.1 # [seconds]
 
 # Syntax
 SYN = '16' # <syn>
-ACK = '06' # <ack>
 
 # Log file path and name
 LOGFILE = os.path.join(os.path.join(os.environ['USERPROFILE']),
@@ -250,7 +249,7 @@ class LandNSM10:
             msg += 'Moving slow to relative position: '
             
         n_bytes = 5
-        n_ret_bytes = 0
+        n_ret_bytes = 5
         var_bytes = []
         
         # Axis number
@@ -278,7 +277,36 @@ class LandNSM10:
         # Command parameters
         cmd_id = '011e'
         n_bytes = 1
-        n_ret_bytes = 1
+        n_ret_bytes = 7
+        var_bytes = []
+        
+        # Axis number
+        var_bytes.append(axis)
+        
+        # Send command and read return bytes
+        ans = self.send_command(cmd_id, n_bytes, var_bytes, n_ret_bytes)
+        
+        # Read axis status
+        ans = ans[4]
+        
+        # Logging
+        msg = 'Axis ' + str(axis) + ' status: '
+        self.write_log(msg)
+        
+        return ans
+    
+    
+    # Switching axis on/off (0x0034 and 0x0035)
+    def axis_switch(self, axis, switch_on=True):
+        # Command parameters
+        if not switch_on:
+            msg = 'Axis ' + str(axis) + ' switched OFF'
+            cmd_id = '0034'
+        elif switch_on:
+            msg = 'Axis ' + str(axis) + ' switched ON'
+            cmd_id = '0035'
+        n_bytes = 1
+        n_ret_bytes = 5
         var_bytes = []
         
         # Axis number
@@ -288,7 +316,6 @@ class LandNSM10:
         ans = self.send_command(cmd_id, n_bytes, var_bytes, n_ret_bytes)
         
         # Logging
-        msg = 'Axis ' + str(axis) + ' status: '
         self.write_log(msg)
         
         return ans
