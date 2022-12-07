@@ -292,6 +292,10 @@ class LandNSM10:
         # Send command and read return bytes
         ans = self.send_command(cmd_id, n_bytes, var_bytes, n_ret_bytes)
         
+        # Logging
+        msg = 'Approaching stored position ' + str(position_number)
+        self.write_log(msg)
+        
         return ans
     
     
@@ -314,6 +318,14 @@ class LandNSM10:
                
         # Send command and read return bytes
         ans = self.send_command(cmd_id, n_bytes, var_bytes, n_ret_bytes)
+        
+        # Stored position value
+        position_value = self.position_inquiry(axis)
+        
+        # Logging
+        msg = 'Stored position ' + str(position_number)
+        msg += ': {0:+.4f}'.format(position_value)
+        self.write_log(msg)
         
         return ans
     
