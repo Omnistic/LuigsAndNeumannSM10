@@ -272,6 +272,52 @@ class LandNSM10:
         return ans
     
     
+    # Approaching a stored position (0x0110)
+    def approach_stored_position(self, axis, position_number):
+        # Command parameters
+        cmd_id = '0110'
+        n_bytes = 2
+        n_ret_bytes = 5
+        var_bytes = []
+        
+        # Axis number
+        var_bytes.append(axis)
+        
+        # 0 < Position number <= 5
+        if 0 < position_number <= 5:
+            var_bytes.append(position_number)
+        else:
+            return None
+        
+        # Send command and read return bytes
+        ans = self.send_command(cmd_id, n_bytes, var_bytes, n_ret_bytes)
+        
+        return ans
+    
+    
+    # Storing a position (0x010A)
+    def store_position(self, axis, position_number):
+        # Command parameters
+        cmd_id = '010A'
+        n_bytes = 2
+        n_ret_bytes = 5
+        var_bytes = []
+        
+        # Axis number
+        var_bytes.append(axis)
+        
+        # 0 < Position number <= 5
+        if 0 < position_number <= 5:
+            var_bytes.append(position_number)
+        else:
+            return None
+               
+        # Send command and read return bytes
+        ans = self.send_command(cmd_id, n_bytes, var_bytes, n_ret_bytes)
+        
+        return ans
+    
+    
     # Inquiry about axis status (0x011e)
     def axis_status(self, axis):
         # Command parameters
