@@ -51,6 +51,12 @@ class LandNSM10:
         # for debugging purposes
         self.serial_debug = serial_debug
         
+        # Set log file to None
+        self.log_file = None
+        
+        # File opened flag
+        self.logging = False
+        
         # Should the log be written into a file?
         if verbose == 2 or verbose == 3:
             # Try opening or creating log file
@@ -61,12 +67,6 @@ class LandNSM10:
                 # File opened flag
                 self.logging = True
             except:
-                # Set log file to None
-                self.log_file = None
-                
-                # File opened flag
-                self.logging = False
-                
                 # Loging
                 msg = 'Unable to open or create log file'
                 self.write_log(msg)
@@ -291,6 +291,12 @@ class LandNSM10:
         
         # Logging
         msg = 'Axis ' + str(axis) + ' status: '
+        
+        if ans == 0:
+            msg += 'OFF'
+        elif ans == 1:
+            msg += 'ON'
+        
         self.write_log(msg)
         
         return ans
