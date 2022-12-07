@@ -103,6 +103,7 @@ class LandNSM10:
         # Logging
         self.write_log(msg)
             
+        
     # Destructor
     def __del__(self):
         # Try closing serial connection
@@ -123,7 +124,8 @@ class LandNSM10:
                 self.log_file.close()
             except:
                 pass
-            
+    
+    
     # Write log (console and/or file)
     def write_log(self, msg):
         # Formated timestamp
@@ -142,6 +144,7 @@ class LandNSM10:
             self.log_file.write(msg + '\n')
         
         return None
+
 
     # Send command to device
     def send_command(self, cmd_id, n_bytes, var_bytes, n_ret_bytes):
@@ -191,7 +194,8 @@ class LandNSM10:
 
         # Return answer
         return ans
-    
+
+
     # Position inquiry (0x0101)
     # Reads the position as displayed on the console of SM-10
     def position_inquiry(self, axis):
@@ -219,6 +223,7 @@ class LandNSM10:
         self.write_log(msg)
         
         return position
+    
     
     # Approaching a position (0x0048, 0x0049, 0x004a, and 0x004b)
     def approach_position(self,
@@ -267,6 +272,28 @@ class LandNSM10:
         
         return ans
     
+    
+    # Inquiry about axis status (0x011e)
+    def axis_status(self, axis):
+        # Command parameters
+        cmd_id = '011e'
+        n_bytes = 1
+        n_ret_bytes = 1
+        var_bytes = []
+        
+        # Axis number
+        var_bytes.append(axis)
+        
+        # Send command and read return bytes
+        ans = self.send_command(cmd_id, n_bytes, var_bytes, n_ret_bytes)
+        
+        # Logging
+        msg = 'Axis ' + str(axis) + ' status: '
+        self.write_log(msg)
+        
+        return ans
+    
+    
     # Convert a float into bytes with a decimal representation
     def float_to_dec_bytes(self, number):
         # Convert a float into its hexadecimal representation
@@ -284,6 +311,7 @@ class LandNSM10:
         # in the <send_command> function
         
         return dec_rep
+
 
 # Main
 def main():
