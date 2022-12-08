@@ -218,7 +218,7 @@ class LandNSM10:
         position = struct.unpack('f', ans[4:8])[0]
 
         # Logging
-        msg = 'Axis ' + str(axis) + ' position = {0:.4f}'.format(position)
+        msg = 'Axis ' + str(axis) + ' position = {0:+.4f}'.format(position)
         self.write_log(msg)
         
         return position
@@ -249,7 +249,7 @@ class LandNSM10:
             msg += 'Moving slow to relative position: '
             
         n_bytes = 5
-        n_ret_bytes = 5
+        n_ret_bytes = 6
         var_bytes = []
         
         # Axis number
@@ -277,7 +277,7 @@ class LandNSM10:
         # Command parameters
         cmd_id = '0110'
         n_bytes = 2
-        n_ret_bytes = 5
+        n_ret_bytes = 6
         var_bytes = []
         
         # Axis number
@@ -304,7 +304,7 @@ class LandNSM10:
         # Command parameters
         cmd_id = '010A'
         n_bytes = 2
-        n_ret_bytes = 5
+        n_ret_bytes = 6
         var_bytes = []
         
         # Axis number
@@ -370,7 +370,7 @@ class LandNSM10:
             msg = 'Axis ' + str(axis) + ' switched ON'
             cmd_id = '0035'
         n_bytes = 1
-        n_ret_bytes = 5
+        n_ret_bytes = 6
         var_bytes = []
         
         # Axis number
