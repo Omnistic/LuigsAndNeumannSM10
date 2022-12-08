@@ -208,8 +208,9 @@ class LandNSM10:
         var_bytes.append(axis)
         
         # Logging
-        msg = 'Query axis ' + str(axis) + ' position ...'
-        self.write_log(msg)
+        if not private_call:
+            msg = 'Query axis ' + str(axis) + ' position ...'
+            self.write_log(msg)
         
         # Send command and read return bytes
         ans = self.send_command(cmd_id, n_bytes, var_bytes, n_ret_bytes)
