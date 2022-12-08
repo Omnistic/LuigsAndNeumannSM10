@@ -197,7 +197,7 @@ class LandNSM10:
 
     # Position inquiry (0x0101)
     # Reads the position as displayed on the console of SM-10
-    def position_inquiry(self, axis):
+    def position_inquiry(self, axis, private_call=False):
         # Command parameters
         cmd_id = '0101'
         n_bytes = 1
@@ -218,8 +218,10 @@ class LandNSM10:
         position = struct.unpack('f', ans[4:8])[0]
 
         # Logging
-        msg = 'Axis ' + str(axis) + ' position = {0:+.4f}'.format(position)
-        self.write_log(msg)
+        if not private_call:
+            msg = 'Axis ' + str(axis)
+            msg += ' position = {0:+.4f}'.format(position)
+            self.write_log(msg)
         
         return position
     
@@ -320,7 +322,7 @@ class LandNSM10:
         ans = self.send_command(cmd_id, n_bytes, var_bytes, n_ret_bytes)
         
         # Stored position value
-        position_value = self.position_inquiry(axis)
+        position_value = self.position_inquiry(axis, private_call=True)
         
         # Logging
         msg = 'Stored position ' + str(position_number)
